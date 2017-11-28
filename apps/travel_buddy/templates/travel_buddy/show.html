@@ -1,0 +1,48 @@
+{% load staticfiles %}
+<html>
+  <head>
+    <title></title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  </head>
+  <body>
+    <div class='container'>
+      <nav class="navbar navbar-default">
+          <div class='container-fluid'>
+            <div class='navbar-header'>
+                <sapn class='navbar-brand'></sapn>
+            </div>
+            <div id='navbar' class='navbar-collapse collapse'>
+            <ul class = 'nav navbar-nav'>
+              <li><a href='/'></a></li>
+              <li><a href='/'></a></li>
+            </ul>
+            <ul class = 'nav navbar-nav navbar-right'>
+                <li><a href='/travel'>Home</a></li>
+                <li><a href=''>logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div>  
+    <div class='container'>
+        <h3>{{travel.destination}}</h3>
+        <p>Planned By: {{travel.user.name}}</p>
+        <p>Description: {{travel.plan}}</p>
+        <p>Travel Date From: {{travel.start_date}}</p>
+        <p>Travel Date To: {{travel.end_date}}</p>
+
+        <h4>Other users' joining the trip:</h4>
+        {{travel.travler_set.all}}
+        {%for t in trips%}
+        
+        {%if t.travler.id == travel.id%}
+            {{t.user.name}}
+        {%endif%}
+        
+        {%endfor%}
+          
+      </div>
+  </body>
+</html>    

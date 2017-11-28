@@ -1,0 +1,66 @@
+{% load staticfiles %}
+<html>
+  <head>
+    <title>Travel Buddy</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  </head>
+  <body>
+    <div class='container'>
+      {% if messages %}
+        {{messages.length}}
+        <ul>
+          {% for message in messages %}
+            <li class = 'errors alert-danger'>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+    <div class='container'>
+      <div id='reg'class='col-md-6'>
+        <h1>Welcome!</h1>
+        <h3>Register</h3>
+        <form action='/create_user' method='post'>
+          {% csrf_token %}
+          <div class="form-group">
+            Name: 
+            <input class="form-control input" type='text' name='name'>
+          </div>
+          <div class="form-group">
+            Username: 
+            <input  class="form-control input" type='text' name='username'>
+          </div>
+          <div class="form-group">
+            Password: 
+            <input class="form-control input " type='password' name='password'>
+          </div>
+          <div class="form-group">
+            <span>*Password shuld be at least 8 characters</span><br/><br/>
+            Confirm pw: 
+            <input class="form-control input " type='password' name='conf_pw'>
+          </div>
+          <div class="form-group">
+            <input class="form-control register  btn btn-primary" type='submit' value="Register">
+          </div>                              
+        </form>
+      </div>
+      <div id='login' class = 'col-md-6'>
+        <h1>Login</h1>
+        <form action='/signin' method='post'>
+          {% csrf_token %}
+          <div class="form-group">
+            Username: 
+            <input class="form-control input" type='text' name='username'>
+          </div>
+          <div class="form-group">
+            Password: 
+            <input class="form-control input" type='password' name='password'>
+          </div class="form-group">
+            <input class="form-control register btn btn-primary" type='submit' value="Login">
+          </div>                              
+        </form>
+      </div>
+    </div>  
+  </body>
+</html>

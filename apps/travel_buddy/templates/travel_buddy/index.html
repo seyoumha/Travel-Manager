@@ -1,0 +1,103 @@
+{% load staticfiles %}
+<html>
+  <head>
+    <title></title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  </head>
+  <body>
+    <div class='container'>
+        <nav class="navbar navbar-default">
+            <div class='container-fluid'>
+              <div class='navbar-header'>
+                  <sapn class='navbar-brand'></sapn>
+              </div>
+              <div id='navbar' class='navbar-collapse collapse'>
+                <ul class = 'nav navbar-nav navbar-right'>
+                    <li><a href='/logout'>logout</a></li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+      <h1>Hello {{user.username}}!</h1>
+      <p>Your Trip Schedules</p>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Destination</th>
+                <th scope="col">Travel Start Date</th>
+                <th scope="col">Travel End Date</th>
+                <th scope="col">Plan</th>     
+              </tr>
+            </thead>
+            <tbody>
+            {%for trip in trips %}
+              {% if trip.user_id == request.session.id %}          
+                <tr>
+                    <td>{{trip.travler.destination}}</td>
+                    <td>{{trip.travler.start_date}}</td>
+                    <td>{{trip.travler.end_date}}</td>
+                    <td>{{trip.travler.plan}}</td>
+                </tr>
+                {%endif%}
+            {%endfor%}
+               
+            {%for travel in all_travels %}
+                {%if travel.user_id == request.session.id%}
+                  <tr>
+                    <td>{{travel.destination}}</td>
+                    <td>{{travel.start_date}}</td>
+                    <td>{{travel.end_date}}</td>
+                    <td>{{travel.plan}}</td>
+                  </tr>
+                  {%endif%}
+            {%endfor%}
+            </tbody>
+        </table>
+          
+        <p>Other User's Travel Plans</p>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Destination</th>
+                <th scope="col">Travel Start Date</th>
+                <th scope="col">Travel End Date</th>
+                <th scope="col">Plan</th> 
+                <th scope="col">Do You Wnat to Join?</th>     
+              </tr>
+            </thead>
+            <tbody>
+              
+                {%for travel in all_travels%}
+                  {%if travel.id in user_trips%} 
+                  {%else%} 
+                    {%if travel.user_id != request.session.id%}
+                    <tr>
+                      <td>{{travel.user.name}}</td>
+                      <td><a href='/travels/destination/{{travel.id}}'>{{travel.destination}}</a></td>
+                      <td>{{travel.start_date}}</td>
+                      <td>{{travel.end_date}}</td>
+                      <td>{{travel.plan}}</td>
+                      <td>
+                        <form action='/join_travel' method='post'>
+                          {%csrf_token%}
+                          <input type='hidden' name = 'id' value='{{travel.id}}'>
+                          <input class='btn btn-primary' type='submit' value='Join'>
+                        </form>
+                      </td>
+                    </tr>
+              {%endif%}
+              {%endif%}
+              
+              {%endfor%}
+              
+            </tbody>
+        </table>
+      <div>
+        <a href='travel/add'>Add travel plan</a>
+      </div>      
+    </div>
+  </body>
+</html>    
